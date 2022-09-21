@@ -77,43 +77,54 @@ class Tree {
   };
 
   // Returns node of given value or null if not present in tree
-  find = function (root, value) {
-    if (root == null) {
+  find = function (value, root = this.root) {
+    if (root === null) {
       return null;
     }
 
-    if (root.data == value) {
+    if (root.data === value) {
       return root;
     }
 
     if (root.data > value) {
-      return this.find(root.left, value);
+      return this.find(value, root.left);
     }
 
     if (root.data < value) {
-      return this.find(root.right, value);
+      return this.find(value, root.right);
     }
   };
 
-  // Inserts node for given value
-  insert = function (value, root = this.root) {
-    if (root === null) {
-      return new Node(value);
-    }
-
-    if (root.data === value) {
+  insert = function (value) {
+    // Return if value is already present in ree
+    if (this.find(value)) {
       return;
     }
+    const newNode = new Node(value);
 
-    if (root.data > value) {
-      root.left = this.insert(value, root.left);
+    // If tree is empty set root to be new node
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.insertNode(this.root, newNode);
     }
+  };
 
-    if (root.data < value) {
-      root.right = this.insert(value, root.right);
+  // Recursion method placing new node when root node's appropriate child is null
+  insertNode = function (root, newNode) {
+    if (newNode.data < root.data) {
+      if (root.left === null) {
+        root.left = newNode;
+      } else {
+        this.insertNode(root.left, newNode);
+      }
+    } else {
+      if (root.right === null) {
+        root.right = newNode;
+      } else {
+        this.insertNode(root.right, newNode);
+      }
     }
-
-    return root;
   };
 
   // Deletes node for given value
@@ -162,23 +173,7 @@ class Tree {
     }
   };
 
-  // levelOrder = function (callback) {
-  //   // Return empty array if root is null
-  //   if (this.root === null) {
-  //     return [];
-  //   }
-
-  //   const queue = [this.root];
-  //   const results = [];
-
-  //   while (queue.length > 0) {
-
-  //   }
-
-  //   console.log(queue.length);
-  // };
-
-  // Runs callback in level order for a given fn
+  // Runs callback in level order for a given function
   levelOrder = function (callback) {
     if (this.root === null) return [];
 
@@ -205,4 +200,5 @@ class Tree {
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 myTree.prettyPrint();
 
-console.log(myTree.levelOrder());
+myTree.insert(8);
+myTree.prettyPrint();
