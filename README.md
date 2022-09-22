@@ -2,7 +2,7 @@
 
 The binary search trees assignment from The Odin Project.
 
-Create a balanced binary tree from an array of random numbers are run the following methods on it:
+Create a balanced binary tree from an array of random numbers and run the following methods:
 
 1. Find an element
 2. Insert an element
@@ -15,3 +15,5 @@ Create a balanced binary tree from an array of random numbers are run the follow
 9. Calculate depth of given element.
 10. Check if tree is balanced.
 11. Re-balance an un-balanced tree.
+
+A demo driver-script has been provided for a tree of 20 elements. Run the file and check your console :)
