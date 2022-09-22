@@ -173,7 +173,7 @@ class Tree {
     }
   };
 
-  // Runs callback in level order for a given function
+  // Runs callback in level order (left to right) for a given function or returns data arr if no function
   levelOrder = function (callback) {
     if (this.root === null) return [];
 
@@ -195,10 +195,112 @@ class Tree {
     }
     return result;
   };
+
+  // Executes given function in pre-order or returns data arr in pre-order
+  preOrder = function (func, root = this.root, results = []) {
+    if (root === null) {
+      return;
+    }
+    func ? func(root.data) : results.push(root.data);
+    this.preOrder(func, root.left, results);
+    this.preOrder(func, root.right, results);
+
+    if (results.length > 0) return results;
+  };
+
+  // Exectures given functionin in-order or returns data arr in in-order
+  inOrder = function (func, root = this.root, results = []) {
+    if (root === null) {
+      return;
+    }
+
+    this.inOrder(func, root.left, results);
+    func ? func(root.data) : results.push(root.data);
+    this.inOrder(func, root.right, results);
+
+    if (results.length > 0) return results;
+  };
+
+  // Exectures given functionin post-order or returns data arr in post-order
+  postOrder = function (func, root = this.root, results = []) {
+    if (root === null) {
+      return;
+    }
+
+    this.postOrder(func, root.left, results);
+    this.postOrder(func, root.right, results);
+    func ? func(root.data) : results.push(root.data);
+
+    if (results.length > 0) return results;
+  };
+
+  // Returns a node's height where height is defined as the number of edges in the longest
+  // path from a given node to a leaf node
+
+  height = function (root = this.root) {
+    if (root === null) {
+      return -1;
+    }
+
+    let leftHeight = this.height(root.left);
+    let rightHeight = this.height(root.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  };
+
+  depth = function (root = this.root) {
+    if (root === null) {
+      return 0;
+    }
+
+    let leftDepth = this.depth(root.left);
+    let rightDepth = this.depth(root.right);
+
+    return Math.max(leftDepth, rightDepth) + 1;
+  };
+
+  isBalanced = function (root = this.root) {
+    if (root === null) {
+      return true;
+    }
+
+    let leftHeight = this.height(root.left);
+    let rightHeight = this.height(root.right);
+
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+      return false;
+    }
+
+    this.isBalanced(root.left);
+    this.isBalanced(root.right);
+
+    return true;
+  };
+
+  // Creates new array from pre-order collection and builds new tree
+  rebalance = function () {
+    const arr = this.preOrder();
+    this.arr = this.prepArr(arr);
+    this.root = this.buildTree(this.arr);
+  };
 }
 
 const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 myTree.prettyPrint();
-
-myTree.insert(8);
+myTree.insert(22);
 myTree.prettyPrint();
+myTree.insert(24);
+myTree.prettyPrint();
+
+myTree.insert(25);
+myTree.prettyPrint();
+myTree.insert(26);
+myTree.prettyPrint();
+
+// console.log(myTree.inOrder());
+// console.log(myTree.postOrder());
+// console.log(myTree.height());
+console.log(myTree.isBalanced());
+
+myTree.rebalance();
+myTree.prettyPrint();
+console.log(myTree.isBalanced());
