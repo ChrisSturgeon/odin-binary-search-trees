@@ -61,7 +61,7 @@ class Tree {
     return tree;
   };
 
-  // Console logs node-tree
+  // Console logs tree in readable format
   prettyPrint = function (node = this.root, prefix = '', isLeft = true) {
     if (node.right !== null) {
       this.prettyPrint(
@@ -95,6 +95,7 @@ class Tree {
     }
   };
 
+  // Inserts node of given function into tree
   insert = function (value) {
     // Return if value is already present in ree
     if (this.find(value)) {
@@ -110,7 +111,7 @@ class Tree {
     }
   };
 
-  // Recursion method placing new node when root node's appropriate child is null
+  // Recursion helper-method placing new node when root node's appropriate child is null
   insertNode = function (root, newNode) {
     if (newNode.data < root.data) {
       if (root.left === null) {
@@ -276,7 +277,7 @@ class Tree {
     return true;
   };
 
-  // Creates new array from pre-order collection and builds new tree
+  // Creates new array from pre-order collection and builds new balanced tree
   rebalance = function () {
     const arr = this.preOrder();
     this.arr = this.prepArr(arr);
@@ -284,23 +285,73 @@ class Tree {
   };
 }
 
-const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-myTree.prettyPrint();
-myTree.insert(22);
-myTree.prettyPrint();
-myTree.insert(24);
-myTree.prettyPrint();
+// Driver Script helper function
+function createRandomArray(elementCount) {
+  const arr = [];
+  for (let i = 0; i < elementCount; i++) {
+    arr.push(Math.floor(Math.random() * 100));
+  }
+  return arr;
+}
 
-myTree.insert(25);
-myTree.prettyPrint();
-myTree.insert(26);
-myTree.prettyPrint();
+// Driver Script
 
-// console.log(myTree.inOrder());
-// console.log(myTree.postOrder());
-// console.log(myTree.height());
-console.log(myTree.isBalanced());
+function driverScript(elementCount) {
+  if (elementCount > 0) {
+    const arr = createRandomArray(elementCount);
+    const myTree = new Tree(arr);
+    myTree.prettyPrint();
 
-myTree.rebalance();
-myTree.prettyPrint();
-console.log(myTree.isBalanced());
+    // Check if tree is balanced
+    console.log('Is Tree Balanced? --> ', myTree.isBalanced());
+
+    // Print element in level-order
+    console.log(' --- Elements in level order ---');
+    console.log(myTree.levelOrder());
+
+    // Print element in pre-order
+    console.log(' --- Elements in pre-order ---');
+    console.log(myTree.preOrder());
+
+    // Print element in in-order
+    console.log(' --- Elements in in-order ---');
+    console.log(myTree.inOrder());
+
+    // Print element in post-order
+    console.log(' --- Elements in post-order ---');
+    console.log(myTree.postOrder());
+
+    // Unbalance the tree
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.insert(Math.floor(Math.random() * 100));
+    myTree.prettyPrint();
+    console.log('Is Tree Balanced? --> ', myTree.isBalanced());
+
+    // Rebalance the tree
+    myTree.rebalance();
+    myTree.prettyPrint();
+    console.log('Is Tree Now Balanced? --> ', myTree.isBalanced());
+
+    // Print element in pre-order
+    console.log(' --- Elements in pre-order ---');
+    console.log(myTree.preOrder());
+
+    // Print element in in-order
+    console.log(' --- Elements in in-order ---');
+    console.log(myTree.inOrder());
+
+    // Print element in post-order
+    console.log(' --- Elements in post-order ---');
+    console.log(myTree.postOrder());
+  } else {
+    console.log(
+      'Please specify the amount of elements you would like in the tree'
+    );
+  }
+}
+
+driverScript(20);
